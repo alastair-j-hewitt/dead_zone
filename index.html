@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <video id="vid" autoplay></video>
+    <script>
+      navigator.mediaDevices.getUserMedia({
+        video: true
+      })
+      .then(stream => {
+        document.getElementById("vid").srcObject = stream;
+      })
+    </script>
+
+    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" ></script>
+
+    <script>
+      let scanner = new Instascan.Scanner(
+            {
+                video: document.getElementById('preview'), facingMode: "environment"
+            }
+        );
+        scanner.addListener('scan', function(content) {
+
+            let paths = ['https://ciegocielos.000webhostapp.com/confirmation.html', 'https://ciegocielos.000webhostapp.com/t1.html', 'https://ciegocielos.000webhostapp.com/t2.html', 'https://ciegocielos.000webhostapp.com/t3.html'];
+
+          window.location.href = paths[Math.floor(Math.random() * paths.length)];
+            sessionStorage.setItem("cont", content);
+
+        });
+        Instascan.Camera.getCameras().then(cameras =>
+        {
+
+            if(cameras.length > 0){
+                scanner.start(cameras[0]);
+            } else {
+                console.error("Não existe câmera no dispositivo!");
+            }
+        });
+    </script>
+    </script>
+  </body>
+</html>
